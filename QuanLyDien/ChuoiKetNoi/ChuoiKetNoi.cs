@@ -11,11 +11,11 @@ namespace QuanLyDien
     {
         //PC
 
-         public static string KetNoi = @"Data Source=DESKTOP-G33LL8C\HIEN;Initial Catalog=QuanLyDienNang;Integrated Security=True;Encrypt=False";
+        // public static string KetNoi = @"Data Source=DESKTOP-G33LL8C\HIEN;Initial Catalog=QuanLyDienNang;Integrated Security=True;Encrypt=False";
 
         //Lap
 
-       // public static string KetNoi = @"Data Source=DESKTOP-IGBR7DH\WEB; Initial Catalog=QuanLyDienNang; Integrated Security=True; Encrypt=False";
+        public static string KetNoi = @"Data Source=DESKTOP-IGBR7DH\WEB; Initial Catalog=QuanLyDienNang; Integrated Security=True; Encrypt=False";
     }
 }
 
