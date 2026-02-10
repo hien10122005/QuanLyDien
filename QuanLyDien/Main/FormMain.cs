@@ -223,26 +223,26 @@ namespace QuanLyDien.Test
 
         public void XapSepListMenu()
         {
-            // panelMenu.Controls.SetChildIndex(pnlTrangChu, 3);
-            // panelMenu.Controls.SetChildIndex(pnllist_KH, 1);
-            //  panelMenu.Controls.SetChildIndex(pnlTrangChu,0);
-            //  panelMenu.Controls.SetChildIndex(palQuanLyYeuCaiLapDat, 0);
+            // Danh sách các Panel Menu theo thứ tự từ DƯỚI lên TRÊN
+           Control[] menuOrder = new Control[] {
+            pallistNhatKyHeThong,       // Nằm cuối cùng của menu
+            pallistBaoCao,
+            pallistQuanLyDongHoDien,
+            pallistQuanLyYeuCaiLapDat,
+            pallistGhiSoDien,           // Đã bỏ dòng trùng lặp
+            pnllist_KH,
+            pallistHoaDon,
+            pallist_NV,
+            pnllistTrangChu,            // Trang chủ nằm gần trên cùng
+            palTapMoDong                // Cái này (thường là Logo/User info) nằm trên cùng
+        };
 
-            Control[] menuOrder = new Control[] {
-                pallistNhatKyHeThong,
-                pallistGhiSoDien,
-                pallistQuanLyDongHoDien,
-                pallistQuanLyYeuCaiLapDat,
-                pallistGhiSoDien,
-                pnllist_KH,
-                pallistHoaDon,
-                pallist_NV,         
-                pnllistTrangChu,
-                palTapMoDong
-            };
             foreach (Control ctrl in menuOrder)
             {
-                if (ctrl != null) ctrl.SendToBack();
+                if (ctrl != null)
+                {
+                    ctrl.SendToBack(); // Đẩy dần các control lên trên
+                }
             }
         }
 
@@ -351,18 +351,15 @@ namespace QuanLyDien.Test
 
         private void button1_Click(object sender, EventArgs e)
         {
+            labTieuDe.Text = "Trang Chủ";
             OpenChildForm(new FormTrangChu());
         }
 
         private void button8_Click(object sender, EventArgs e)
         {
+            labTieuDe.Text = "Trang Chủ";
             OpenChildForm(new FormTrangChu());
         }
-
-        private void panel6_Paint(object sender, PaintEventArgs e)
-        {
-        }
-
         private void button5_Click(object sender, EventArgs e)
         {
             labTieuDe.Text = "Quản Lý Nhân Viên";
@@ -371,6 +368,7 @@ namespace QuanLyDien.Test
 
         private void pnlTrangChu_Click(object sender, EventArgs e)
         {
+            labTieuDe.Text = "Trang Chủ";
             OpenChildForm(new FormTrangChu());
         }
 
@@ -404,38 +402,44 @@ namespace QuanLyDien.Test
 
         private void palNhatKyHeThong_Click(object sender, EventArgs e)
         {
-            label1.Text = "Nhật Ký Hệ Thống";
+            labTieuDe.Text = "Nhật Ký Hệ Thống";
             OpenChildForm(new FormNhatKyHeThong());
         }
 
         private void pallistGhiSoDien_Click(object sender, EventArgs e)
         {
-            label1.Text = "Ghi Số Điện";
+            labTieuDe.Text = "Ghi Số Điện";
             OpenChildForm(new FormGhiSoDien());
         }
 
         private void palQuanLyHoaDon_Click(object sender, EventArgs e)
         {
-            label1.Text = "Quản Lý Hóa Đơn";
+            labTieuDe.Text = "Quản Lý Hóa Đơn";
             OpenChildForm(new FormQuanLyHoaDon());
         }
 
         private void palQuanLyCongNo_Click(object sender, EventArgs e)
         {
-            label1.Text = "Quản Lý Công Nợ";
+            labTieuDe.Text = "Quản Lý Công Nợ";
             OpenChildForm (new FormQuanLyCongNo());
         }
 
         private void pallistQuanLyDongHoDien_Click(object sender, EventArgs e)
         {
-            label1.Text = "Quản Lý Đồng Hồ điện";
+            labTieuDe.Text = "Quản Lý Đồng Hồ điện";
             OpenChildForm(new FormQuanLyDongHo());
         }
 
         private void pallistQuanLyYeuCaiLapDat_Click(object sender, EventArgs e)
         {
-            label1.Text = "Quản Lý Lắp Đồng Hồ điện";
+            labTieuDe.Text = "Quản Lý Lắp Đồng Hồ điện";
             OpenChildForm(new FormQuanLyLapDatDongHo());
+        }
+        private void pallistBaoCao_Click(object sender, EventArgs e)
+        {
+            labTieuDe.Text = "Bao Cao";
+            OpenChildForm(new FormBaoCaoDoanhThu());
+
         }
     }
 }

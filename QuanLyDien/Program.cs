@@ -1,6 +1,7 @@
 ﻿
 using QuanLyDien.Admin;
 using QuanLyDien.ChucNangChung;
+using QuanLyDien.NhanVienThu;
 using QuanLyDien.Test;
 using System;
 using System.Collections.Generic;

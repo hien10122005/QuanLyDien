@@ -31,6 +31,9 @@
             this.palChinh = new System.Windows.Forms.Panel();
             this.palMain = new System.Windows.Forms.Panel();
             this.panelMenu = new System.Windows.Forms.Panel();
+            this.pallistBaoCao = new System.Windows.Forms.Panel();
+            this.label14 = new System.Windows.Forms.Label();
+            this.button14 = new System.Windows.Forms.Button();
             this.pallistQuanLyYeuCaiLapDat = new System.Windows.Forms.Panel();
             this.label11 = new System.Windows.Forms.Label();
             this.button11 = new System.Windows.Forms.Button();
@@ -109,6 +112,7 @@
             this.btnClose = new System.Windows.Forms.Button();
             this.palChinh.SuspendLayout();
             this.panelMenu.SuspendLayout();
+            this.pallistBaoCao.SuspendLayout();
             this.pallistQuanLyYeuCaiLapDat.SuspendLayout();
             this.pallistNhatKyHeThong.SuspendLayout();
             this.pallistGhiSoDien.SuspendLayout();
@@ -161,6 +165,7 @@
             // panelMenu
             // 
             this.panelMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(26)))), ((int)(((byte)(58)))));
+            this.panelMenu.Controls.Add(this.pallistBaoCao);
             this.panelMenu.Controls.Add(this.pallistQuanLyYeuCaiLapDat);
             this.panelMenu.Controls.Add(this.pallistNhatKyHeThong);
             this.panelMenu.Controls.Add(this.pallistGhiSoDien);
@@ -177,12 +182,47 @@
             this.panelMenu.Size = new System.Drawing.Size(270, 603);
             this.panelMenu.TabIndex = 0;
             // 
+            // pallistBaoCao
+            // 
+            this.pallistBaoCao.Controls.Add(this.label14);
+            this.pallistBaoCao.Controls.Add(this.button14);
+            this.pallistBaoCao.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pallistBaoCao.Location = new System.Drawing.Point(0, 518);
+            this.pallistBaoCao.Name = "pallistBaoCao";
+            this.pallistBaoCao.Size = new System.Drawing.Size(270, 60);
+            this.pallistBaoCao.TabIndex = 19;
+            this.pallistBaoCao.Click += new System.EventHandler(this.pallistBaoCao_Click);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.ForeColor = System.Drawing.Color.White;
+            this.label14.Location = new System.Drawing.Point(61, 19);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(65, 20);
+            this.label14.TabIndex = 18;
+            this.label14.Text = "Báo Cáo";
+            // 
+            // button14
+            // 
+            this.button14.BackgroundImage = global::QuanLyDien.Properties.Resources.chat;
+            this.button14.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.button14.FlatAppearance.BorderSize = 0;
+            this.button14.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button14.ForeColor = System.Drawing.Color.White;
+            this.button14.Location = new System.Drawing.Point(20, 14);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(40, 31);
+            this.button14.TabIndex = 19;
+            this.button14.UseVisualStyleBackColor = true;
+            // 
             // pallistQuanLyYeuCaiLapDat
             // 
             this.pallistQuanLyYeuCaiLapDat.Controls.Add(this.label11);
             this.pallistQuanLyYeuCaiLapDat.Controls.Add(this.button11);
             this.pallistQuanLyYeuCaiLapDat.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pallistQuanLyYeuCaiLapDat.Location = new System.Drawing.Point(0, 451);
+            this.pallistQuanLyYeuCaiLapDat.Location = new System.Drawing.Point(0, 458);
             this.pallistQuanLyYeuCaiLapDat.Name = "pallistQuanLyYeuCaiLapDat";
             this.pallistQuanLyYeuCaiLapDat.Size = new System.Drawing.Size(270, 60);
             this.pallistQuanLyYeuCaiLapDat.TabIndex = 18;
@@ -218,7 +258,7 @@
             this.pallistNhatKyHeThong.Controls.Add(this.button10);
             this.pallistNhatKyHeThong.Dock = System.Windows.Forms.DockStyle.Top;
             this.pallistNhatKyHeThong.ForeColor = System.Drawing.Color.White;
-            this.pallistNhatKyHeThong.Location = new System.Drawing.Point(0, 391);
+            this.pallistNhatKyHeThong.Location = new System.Drawing.Point(0, 398);
             this.pallistNhatKyHeThong.Margin = new System.Windows.Forms.Padding(0);
             this.pallistNhatKyHeThong.Name = "pallistNhatKyHeThong";
             this.pallistNhatKyHeThong.Size = new System.Drawing.Size(270, 60);
@@ -254,7 +294,7 @@
             this.pallistGhiSoDien.Controls.Add(this.button13);
             this.pallistGhiSoDien.Dock = System.Windows.Forms.DockStyle.Top;
             this.pallistGhiSoDien.ForeColor = System.Drawing.Color.White;
-            this.pallistGhiSoDien.Location = new System.Drawing.Point(0, 331);
+            this.pallistGhiSoDien.Location = new System.Drawing.Point(0, 338);
             this.pallistGhiSoDien.Margin = new System.Windows.Forms.Padding(0);
             this.pallistGhiSoDien.Name = "pallistGhiSoDien";
             this.pallistGhiSoDien.Size = new System.Drawing.Size(270, 60);
@@ -291,7 +331,7 @@
             this.pallistQuanLyDongHoDien.Controls.Add(this.button12);
             this.pallistQuanLyDongHoDien.Dock = System.Windows.Forms.DockStyle.Top;
             this.pallistQuanLyDongHoDien.ForeColor = System.Drawing.Color.White;
-            this.pallistQuanLyDongHoDien.Location = new System.Drawing.Point(0, 271);
+            this.pallistQuanLyDongHoDien.Location = new System.Drawing.Point(0, 278);
             this.pallistQuanLyDongHoDien.Margin = new System.Windows.Forms.Padding(0);
             this.pallistQuanLyDongHoDien.Name = "pallistQuanLyDongHoDien";
             this.pallistQuanLyDongHoDien.Size = new System.Drawing.Size(270, 60);
@@ -328,7 +368,7 @@
             this.pnllistTrangChu.Controls.Add(this.button1);
             this.pnllistTrangChu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnllistTrangChu.ForeColor = System.Drawing.Color.White;
-            this.pnllistTrangChu.Location = new System.Drawing.Point(0, 211);
+            this.pnllistTrangChu.Location = new System.Drawing.Point(0, 218);
             this.pnllistTrangChu.Margin = new System.Windows.Forms.Padding(0);
             this.pnllistTrangChu.Name = "pnllistTrangChu";
             this.pnllistTrangChu.Size = new System.Drawing.Size(270, 60);
@@ -369,9 +409,9 @@
             this.pallistHoaDon.Controls.Add(this.label5);
             this.pallistHoaDon.Dock = System.Windows.Forms.DockStyle.Top;
             this.pallistHoaDon.ForeColor = System.Drawing.Color.White;
-            this.pallistHoaDon.Location = new System.Drawing.Point(0, 173);
+            this.pallistHoaDon.Location = new System.Drawing.Point(0, 167);
             this.pallistHoaDon.Name = "pallistHoaDon";
-            this.pallistHoaDon.Size = new System.Drawing.Size(270, 38);
+            this.pallistHoaDon.Size = new System.Drawing.Size(270, 51);
             this.pallistHoaDon.TabIndex = 4;
             // 
             // labNutTha_HD
@@ -513,9 +553,8 @@
             this.pnllist_KH.ForeColor = System.Drawing.Color.White;
             this.pnllist_KH.Location = new System.Drawing.Point(0, 113);
             this.pnllist_KH.Name = "pnllist_KH";
-            this.pnllist_KH.Size = new System.Drawing.Size(270, 60);
+            this.pnllist_KH.Size = new System.Drawing.Size(270, 54);
             this.pnllist_KH.TabIndex = 3;
-            this.pnllist_KH.Paint += new System.Windows.Forms.PaintEventHandler(this.panel6_Paint);
             // 
             // labNutTha_TK_KH
             // 
@@ -1098,6 +1137,8 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.palChinh.ResumeLayout(false);
             this.panelMenu.ResumeLayout(false);
+            this.pallistBaoCao.ResumeLayout(false);
+            this.pallistBaoCao.PerformLayout();
             this.pallistQuanLyYeuCaiLapDat.ResumeLayout(false);
             this.pallistQuanLyYeuCaiLapDat.PerformLayout();
             this.pallistNhatKyHeThong.ResumeLayout(false);
@@ -1222,5 +1263,8 @@
         private System.Windows.Forms.Panel pallistQuanLyYeuCaiLapDat;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.Panel pallistBaoCao;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Button button14;
     }
 }
