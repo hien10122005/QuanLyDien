@@ -314,6 +314,7 @@
     <None Include="Resources\verified-account.png.bmp" />
     <None Include="Resources\572c661b-9135-404b-8784-1c36f75b5506-removebg-preview.png" />
     <None Include="Resources\agenda_11776425.png" />
+    <None Include="Resources\chat.png" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -80,7 +80,7 @@ namespace QuanLyDien.Test
             GanClickChoPanel(palQuanLyKhachHang, palQuanLyKhachHang_Click);
             GanClickChoPanel(palQuanLyTaiKhoan, palQuanLyTaiKhoan_Click);
             GanClickChoPanel(palQuanLyNhanVien, palQuanLyNhanVien_Click);
-            GanClickChoPanel(pallistQuanLyYeuCaiLapDat, palNhatKyHeThong_Click);
+            GanClickChoPanel(pallistNhatKyHeThong, palNhatKyHeThong_Click);
         }
 
         // ================== HOVER BUTTON ==================
@@ -430,6 +430,12 @@ namespace QuanLyDien.Test
         {
             label1.Text = "Quản Lý Đồng Hồ điện";
             OpenChildForm(new FormQuanLyDongHo());
+        }
+
+        private void pallistQuanLyYeuCaiLapDat_Click(object sender, EventArgs e)
+        {
+            label1.Text = "Quản Lý Lắp Đồng Hồ điện";
+            OpenChildForm(new FormQuanLyLapDatDongHo());
         }
     }
 }
