@@ -91,7 +91,7 @@ namespace QuanLyDien.NhanVienThu
 
             DialogResult dr = MessageBox.Show($"Xác nhận thực hiện biện pháp '{noiDung}' cho hóa đơn {maHD}?", "Xác nhận", MessageBoxButtons.YesNo);
 
-            if (dr == DialogResult.Yes)
+            if (dr == DialogResult.Yes)         
             {
                 try
                 {
@@ -116,7 +116,11 @@ namespace QuanLyDien.NhanVienThu
                             cmdUpdate.Parameters.AddWithValue("@mahd", maHD);
                             cmdUpdate.ExecuteNonQuery();
 
-                            MessageBox.Show("Hệ thống đã ghi nhận biện pháp và tự động KHÓA ĐỒNG HỒ ĐIỆN của khách hàng!");
+                            string sqlUpdateKH = @"UPDATE KhachHang SET TrangThai = N'Khóa' WHERE MaKH =(SELECT MaKH FROM HoaDon WHERE MaHoaDon = @mahd)";
+                            cmdUpdate.CommandText = sqlUpdateKH;
+                            cmdUpdate.ExecuteNonQuery();
+                            MessageBox.Show("Hệ thống đã ghi nhận biện pháp và tự động KHÓA ĐỒNG HỒ ĐIỆN Và TÀI KHOẢN của khách hàng!");
+                        
                         }
                         else
                         {

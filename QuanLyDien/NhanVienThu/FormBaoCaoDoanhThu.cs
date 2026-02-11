@@ -12,18 +12,14 @@ namespace QuanLyDien.NhanVienThu
         public FormBaoCaoDoanhThu()
         {
             InitializeComponent();
-            // Thiết lập để Form hiển thị tràn trong Panel chính
             this.TopLevel = false;
             this.Dock = DockStyle.Fill;
         }
 
         private void FormBaoCaoDoanhThu_Load(object sender, EventArgs e)
         {
-            // Khi vừa mở Form, tự lấy Tháng/Năm hiện tại của máy tính gán vào ô chọn
             nudThang.Value = DateTime.Now.Month;
             nudNam.Value = DateTime.Now.Year;
-
-            // Tự động chạy thống kê lần đầu
             ChayThongKe();
         }
 
@@ -32,10 +28,9 @@ namespace QuanLyDien.NhanVienThu
             ChayThongKe();
         }
 
-        // --- HÀM TỔNG HỢP CHÍNH ---
+        // --- HÀM TỔNG HỢP VÀ THUẬT TOÁN LỌC ---
         void ChayThongKe()
         {
-            // Lấy giá trị người dùng đang chọn trên giao diện
             int thang = (int)nudThang.Value;
             int nam = (int)nudNam.Value;
 
@@ -45,74 +40,105 @@ namespace QuanLyDien.NhanVienThu
                 {
                     con.Open();
 
-                    /* 
-                     * THUẬT TOÁN 1: Tính tổng sản lượng điện của THÁNG được chọn
-                     * Logic: Cộng dồn cột 'SanLuong' của tất cả khách hàng trong tháng đó.
-                     * Hàm ISNULL(..., 0): Nếu tháng đó chưa có ai ghi điện (NULL), thì trả về số 0 để không bị lỗi.
-                     */
+                    // --- PHẦN 1: CÁC CON SỐ TỔNG QUÁT (KPI) ---
+
+                    // 1. Tính tổng sản lượng tháng đang chọn
                     string sqlThang = "SELECT ISNULL(SUM(SanLuong), 0) FROM GhiChiSo WHERE Thang = @t AND Nam = @n";
                     SqlCommand cmd1 = new SqlCommand(sqlThang, con);
                     cmd1.Parameters.AddWithValue("@t", thang);
                     cmd1.Parameters.AddWithValue("@n", nam);
-                    double slThang = Convert.ToDouble(cmd1.ExecuteScalar());
-                    lblSanLuongThang.Text = slThang.ToString("N0") + " kWh"; // N0 giúp hiện dấu phẩy: 1,200
+                     
+                    lblSanLuongThang.Text = Convert.ToDouble(cmd1.ExecuteScalar()).ToString("N0") + " kWh";
 
-
-                    /* 
-                     * THUẬT TOÁN 2: Tính tổng sản lượng điện của cả NĂM được chọn
-                     * Logic: Giống bên trên nhưng bỏ điều kiện THÁNG, chỉ lọc theo NĂM.
-                     */
+                    // 2. Tính tổng sản lượng cả năm đang chọn (Bỏ qua điều kiện Tháng)
                     string sqlNam = "SELECT ISNULL(SUM(SanLuong), 0) FROM GhiChiSo WHERE Nam = @n";
                     SqlCommand cmd2 = new SqlCommand(sqlNam, con);
                     cmd2.Parameters.AddWithValue("@n", nam);
-                    double slNam = Convert.ToDouble(cmd2.ExecuteScalar());
-                    lblSanLuongNam.Text = slNam.ToString("N0") + " kWh";
+                    lblSanLuongNam.Text = Convert.ToDouble(cmd2.ExecuteScalar()).ToString("N0") + " kWh";
 
-
-                    /* 
-                     * THUẬT TOÁN 3: Tính tổng doanh thu thực tế (Tiền đã thu được)
-                     * Logic: Chỉ cộng 'TongTien' của những hóa đơn có trạng thái là 'Đã thanh toán'.
-                     */
-                    string sqlTien = "SELECT ISNULL(SUM(TongTien), 0) FROM HoaDon " +
-                                     "WHERE Thang = @t AND Nam = @n AND TrangThaiThanhToan = N'Đã thanh toán'";
+                    // 3. Tính doanh thu tháng (Chỉ lấy hóa đơn đã trả tiền)
+                    string sqlTien = "SELECT ISNULL(SUM(TongTien), 0) FROM HoaDon WHERE Thang = @t AND Nam = @n AND TrangThaiThanhToan = N'Đã thanh toán'";
                     SqlCommand cmd3 = new SqlCommand(sqlTien, con);
                     cmd3.Parameters.AddWithValue("@t", thang);
                     cmd3.Parameters.AddWithValue("@n", nam);
-                    decimal doanhThu = Convert.ToDecimal(cmd3.ExecuteScalar());
-                    lblDoanhThu.Text = doanhThu.ToString("N0") + " VNĐ";
+                    lblDoanhThu.Text = Convert.ToDecimal(cmd3.ExecuteScalar()).ToString("N0") + " VNĐ";
 
+                    // --- PHẦN 2: THUẬT TOÁN LỌC DỮ LIỆU LÊN BẢNG (DÙNG IF-ELSE) ---
 
-                    /* 
-                     * THUẬT TOÁN 4: Nạp danh sách chi tiết các hóa đơn vào bảng
-                     * Logic: Dùng lệnh JOIN để lấy Tên Khách Hàng từ bảng KhachHang sang.
-                     */
-                    string sqlBang = @"SELECT MaHoaDon, KH.HoTen, Thang, Nam, TongTien, TrangThaiThanhToan 
-                                       FROM HoaDon JOIN KhachHang KH ON HoaDon.MaKH = KH.MaKH 
-                                       WHERE Thang = @t AND Nam = @n";
-                    SqlDataAdapter da = new SqlDataAdapter(sqlBang, con);
-                    da.SelectCommand.Parameters.AddWithValue("@t", thang);
-                    da.SelectCommand.Parameters.AddWithValue("@n", nam);
+                    string sqlBang = "";
 
+                    // BƯỚC 1: QUYẾT ĐỊNH CÂU LỆNH SQL
+                    if (chkXemCaNam.Checked == true)
+                    {
+                        // Xem cả năm: Chỉ lọc theo Năm và Trạng thái
+                        sqlBang = @"SELECT MaHoaDon, KH.HoTen, Thang, Nam, TongTien, TrangThaiThanhToan 
+                        FROM HoaDon JOIN KhachHang KH ON HoaDon.MaKH = KH.MaKH 
+                        WHERE Nam = @n AND TrangThaiThanhToan = @ThanhToan
+                        ORDER BY Thang ASC";
+                    }
+                    else
+                    {
+                        // Xem theo tháng: Lọc cả Tháng, Năm và Trạng thái
+                        sqlBang = @"SELECT MaHoaDon, KH.HoTen, Thang, Nam, TongTien, TrangThaiThanhToan 
+                        FROM HoaDon JOIN KhachHang KH ON HoaDon.MaKH = KH.MaKH 
+                        WHERE Thang = @t AND Nam = @n AND TrangThaiThanhToan = @ThanhToan";
+                    }
+
+                    // BƯỚC 2: TẠO ĐỐI TƯỢNG LỆNH (SqlCommand)
+                    SqlCommand boLenh = new SqlCommand(sqlBang, con);
+
+                    // BƯỚC 3: NẠP THAM SỐ (Parameters) - Dùng IF/ELSE để gán cho chuẩn
+                    boLenh.Parameters.AddWithValue("@n", nam);
+                    boLenh.Parameters.AddWithValue("@ThanhToan", "Đã thanh toán"); // Đã xóa dấu cách thừa
+
+                    if (chkXemCaNam.Checked == false)
+                    {
+                        // Chỉ nạp tham số Tháng nếu người dùng KHÔNG tích vào 'Xem cả năm'
+                        boLenh.Parameters.AddWithValue("@t", thang);
+                    }
+
+                    // BƯỚC 4: ĐỔ DỮ LIỆU (SqlDataAdapter)
+                    SqlDataAdapter da = new SqlDataAdapter(boLenh);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
+
+                    // Hiển thị lên bảng
                     dgvBaoCao.DataSource = dt;
                     DataGridViewStyle.ApplyModernStyle(dgvBaoCao);
-                    // Định dạng lại tiêu đề bảng cho chuyên nghiệp
-                    dgvBaoCao.Columns["MaHoaDon"].HeaderText = "Mã Hóa Đơn";
-                    dgvBaoCao.Columns["HoTen"].HeaderText = "Tên Khách Hàng";
-                    dgvBaoCao.Columns["TongTien"].HeaderText = "Số Tiền";
-                    dgvBaoCao.Columns["TongTien"].DefaultCellStyle.Format = "N0"; // Hiện số: 1,000,000
+
+                    // --- PHẦN 3: TRANG TRÍ BẢNG ---
+                    if (dgvBaoCao.Columns.Count > 0)
+                    {
+                        dgvBaoCao.Columns["MaHoaDon"].HeaderText = "Mã Hóa Đơn";
+                        dgvBaoCao.Columns["HoTen"].HeaderText = "Tên Khách Hàng";
+                        dgvBaoCao.Columns["TongTien"].HeaderText = "Số Tiền";
+                        dgvBaoCao.Columns["TongTien"].DefaultCellStyle.Format = "N0";
+                        dgvBaoCao.Columns["TongTien"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                    }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Có lỗi khi làm báo cáo: " + ex.Message);
+                MessageBox.Show("Lỗi: " + ex.Message);
             }
+        }
+
+        private void chkXemCaNam_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkXemCaNam.Checked)
+            {
+                nudThang.Enabled = false; // Vô hiệu hóa ô chọn tháng
+            }
+            else
+            {
+                nudThang.Enabled = true;  // Mở lại ô chọn tháng
+            }
+            ChayThongKe(); // Tự động load lại dữ liệu khi người dùng vừa tích vào
         }
 
         private void btnInBaoCao_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Đang chuẩn bị dữ liệu để in ra file PDF...");
+            MessageBox.Show("Chức năng đang được kết nối với hệ thống máy in...");
         }
     }
 }

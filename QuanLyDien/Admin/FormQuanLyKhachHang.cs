@@ -143,7 +143,7 @@ namespace QuanLyDien.Admin
         {
             if (txtMaKH.Text == "") return;
             string trangThaiMoi;
-
+          string  maKH = txtMaKH.Text;
             if (cmbTrangThai.Text == "Hoạt động")
             {
                 trangThaiMoi = "Khóa";
@@ -155,26 +155,44 @@ namespace QuanLyDien.Admin
 
             using (con = new SqlConnection(ChuoiKetNoi.KetNoi))
             {
-                con.Open(); 
-         
+                if (cmbTrangThai.Text == "Hoạt động")
+                {
+                    // Truy vấn kiểm tra: Có hóa đơn nào của khách này đang bị "CẮT ĐIỆN" mà "CHƯA THANH TOÁN" không?
+                    string sqlCheck = @"SELECT COUNT(*) 
+                                FROM BienPhapXuLy sl 
+                                JOIN HoaDon hd ON sl.MaHoaDon = hd.MaHoaDon 
+                                WHERE hd.MaKH = @ma 
+                                AND sl.NoiDung LIKE N'%CẮT ĐIỆN%' 
+                                AND hd.TrangThaiThanhToan = N'Chưa thanh toán'";
+                    SqlCommand cmdCheck = new SqlCommand(sqlCheck, con);
+                    cmdCheck.Parameters.AddWithValue("@ma", maKH);
+                    int soHoaDonViPham = (int)cmdCheck.ExecuteScalar();
+                    if (soHoaDonViPham > 0)
+                    {
+                        MessageBox.Show($"Không thể mở khóa! Khách hàng này đang có {soHoaDonViPham} hóa đơn nợ quá hạn bị CẮT ĐIỆN. Vui lòng thanh toán trước!", "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                        cmbTrangThai.Text = "Khóa";
+                        return;
+                    }
+                }
                 string sql = "UPDATE KhachHang SET TrangThai = @TrangThai WHERE MaKH = @ma";
                 SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.Parameters.AddWithValue("@TrangThai", trangThaiMoi);
-                cmd.Parameters.AddWithValue("@ma", txtMaKH.Text.Trim());
+                cmd.Parameters.AddWithValue("@ma", maKH);
                 cmd.ExecuteNonQuery();
                 if (trangThaiMoi == "Khóa")
                 {
-                    string sqlDH = "UPDATE DongHoDien SET TrangThai = N'Khóa' WHERE MaKH = @ma";
+                    string sqlDH = "UPDATE DongHoDien SET TrangThai = N'Ngừng Cấp Điện' WHERE MaKH = @ma";
                     SqlCommand cmdDH = new SqlCommand(sqlDH, con);
-                    cmdDH.Parameters.AddWithValue("@ma", txtMaKH.Text.Trim());
+                    cmdDH.Parameters.AddWithValue("@ma", maKH);
                     cmdDH.ExecuteNonQuery();
-                    MessageBox.Show("Đã khóa khách hàng và ngừng cấp điện đồng hồ!");
+                    MessageBox.Show("Đã ngừng cấp điện khách hàng và ngừng cấp điện đồng hồ!");
                 }
                 else // Trường hợp Mở lại
                 {
                     string sqlDH = "UPDATE DongHoDien SET TrangThai = N'Hoạt động' WHERE MaKH = @ma";
                     SqlCommand cmdDH = new SqlCommand(sqlDH, con);
-                    cmdDH.Parameters.AddWithValue("@ma", txtMaKH.Text.Trim());
+                    cmdDH.Parameters.AddWithValue("@ma", maKH);
                     cmdDH.ExecuteNonQuery();
                     MessageBox.Show("Đã mở lại trạng thái khách hàng và đồng hồ!");
                 }

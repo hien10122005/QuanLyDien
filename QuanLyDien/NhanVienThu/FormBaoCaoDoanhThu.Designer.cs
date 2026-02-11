@@ -48,6 +48,7 @@
             this.palKPI1 = new System.Windows.Forms.Panel();
             this.lblSanLuongThang = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.chkXemCaNam = new System.Windows.Forms.CheckBox();
             this.panelBottom = new System.Windows.Forms.Panel();
             this.dgvBaoCao = new System.Windows.Forms.DataGridView();
             this.panelTop.SuspendLayout();
@@ -69,7 +70,7 @@
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTop.Location = new System.Drawing.Point(0, 0);
             this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(1073, 100);
+            this.panelTop.Size = new System.Drawing.Size(1179, 100);
             this.panelTop.TabIndex = 0;
             // 
             // labelTitle
@@ -85,6 +86,7 @@
             // 
             // groupBoxFilter
             // 
+            this.groupBoxFilter.Controls.Add(this.chkXemCaNam);
             this.groupBoxFilter.Controls.Add(this.btnThongKe);
             this.groupBoxFilter.Controls.Add(this.btnInBaoCao);
             this.groupBoxFilter.Controls.Add(this.nudNam);
@@ -94,7 +96,7 @@
             this.groupBoxFilter.ForeColor = System.Drawing.Color.Silver;
             this.groupBoxFilter.Location = new System.Drawing.Point(400, 12);
             this.groupBoxFilter.Name = "groupBoxFilter";
-            this.groupBoxFilter.Size = new System.Drawing.Size(650, 75);
+            this.groupBoxFilter.Size = new System.Drawing.Size(759, 75);
             this.groupBoxFilter.TabIndex = 1;
             this.groupBoxFilter.TabStop = false;
             this.groupBoxFilter.Text = "Bộ lọc báo cáo";
@@ -104,7 +106,7 @@
             this.btnThongKe.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(137)))), ((int)(((byte)(239)))));
             this.btnThongKe.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnThongKe.ForeColor = System.Drawing.Color.White;
-            this.btnThongKe.Location = new System.Drawing.Point(320, 25);
+            this.btnThongKe.Location = new System.Drawing.Point(478, 25);
             this.btnThongKe.Name = "btnThongKe";
             this.btnThongKe.Size = new System.Drawing.Size(130, 35);
             this.btnThongKe.TabIndex = 0;
@@ -117,7 +119,7 @@
             this.btnInBaoCao.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(159)))), ((int)(((byte)(0)))), ((int)(((byte)(167)))));
             this.btnInBaoCao.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnInBaoCao.ForeColor = System.Drawing.Color.White;
-            this.btnInBaoCao.Location = new System.Drawing.Point(460, 25);
+            this.btnInBaoCao.Location = new System.Drawing.Point(618, 25);
             this.btnInBaoCao.Name = "btnInBaoCao";
             this.btnInBaoCao.Size = new System.Drawing.Size(130, 35);
             this.btnInBaoCao.TabIndex = 1;
@@ -198,8 +200,8 @@
             this.panelKPI.Location = new System.Drawing.Point(0, 100);
             this.panelKPI.Name = "panelKPI";
             this.panelKPI.Padding = new System.Windows.Forms.Padding(10);
-            this.panelKPI.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.panelKPI.Size = new System.Drawing.Size(1073, 130);
+            this.panelKPI.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 110F));
+            this.panelKPI.Size = new System.Drawing.Size(1179, 130);
             this.panelKPI.TabIndex = 1;
             // 
             // palKPI3
@@ -208,9 +210,9 @@
             this.palKPI3.Controls.Add(this.lblDoanhThu);
             this.palKPI3.Controls.Add(this.label6);
             this.palKPI3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.palKPI3.Location = new System.Drawing.Point(715, 13);
+            this.palKPI3.Location = new System.Drawing.Point(785, 13);
             this.palKPI3.Name = "palKPI3";
-            this.palKPI3.Size = new System.Drawing.Size(345, 104);
+            this.palKPI3.Size = new System.Drawing.Size(381, 104);
             this.palKPI3.TabIndex = 0;
             // 
             // lblDoanhThu
@@ -220,7 +222,7 @@
             this.lblDoanhThu.ForeColor = System.Drawing.Color.Yellow;
             this.lblDoanhThu.Location = new System.Drawing.Point(0, 23);
             this.lblDoanhThu.Name = "lblDoanhThu";
-            this.lblDoanhThu.Size = new System.Drawing.Size(345, 81);
+            this.lblDoanhThu.Size = new System.Drawing.Size(381, 81);
             this.lblDoanhThu.TabIndex = 0;
             this.lblDoanhThu.Text = "0 VNĐ";
             this.lblDoanhThu.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -231,7 +233,7 @@
             this.label6.ForeColor = System.Drawing.Color.Silver;
             this.label6.Location = new System.Drawing.Point(0, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(345, 23);
+            this.label6.Size = new System.Drawing.Size(381, 23);
             this.label6.TabIndex = 1;
             this.label6.Text = "TỔNG DOANH THU THÁNG";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -242,9 +244,9 @@
             this.palKPI2.Controls.Add(this.lblSanLuongNam);
             this.palKPI2.Controls.Add(this.label5);
             this.palKPI2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.palKPI2.Location = new System.Drawing.Point(364, 13);
+            this.palKPI2.Location = new System.Drawing.Point(399, 13);
             this.palKPI2.Name = "palKPI2";
-            this.palKPI2.Size = new System.Drawing.Size(345, 104);
+            this.palKPI2.Size = new System.Drawing.Size(380, 104);
             this.palKPI2.TabIndex = 1;
             // 
             // lblSanLuongNam
@@ -254,7 +256,7 @@
             this.lblSanLuongNam.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.lblSanLuongNam.Location = new System.Drawing.Point(0, 23);
             this.lblSanLuongNam.Name = "lblSanLuongNam";
-            this.lblSanLuongNam.Size = new System.Drawing.Size(345, 81);
+            this.lblSanLuongNam.Size = new System.Drawing.Size(380, 81);
             this.lblSanLuongNam.TabIndex = 0;
             this.lblSanLuongNam.Text = "0 kWh";
             this.lblSanLuongNam.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -265,7 +267,7 @@
             this.label5.ForeColor = System.Drawing.Color.Silver;
             this.label5.Location = new System.Drawing.Point(0, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(345, 23);
+            this.label5.Size = new System.Drawing.Size(380, 23);
             this.label5.TabIndex = 1;
             this.label5.Text = "TỔNG SẢN LƯỢNG NĂM";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -278,7 +280,7 @@
             this.palKPI1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.palKPI1.Location = new System.Drawing.Point(13, 13);
             this.palKPI1.Name = "palKPI1";
-            this.palKPI1.Size = new System.Drawing.Size(345, 104);
+            this.palKPI1.Size = new System.Drawing.Size(380, 104);
             this.palKPI1.TabIndex = 2;
             // 
             // lblSanLuongThang
@@ -288,7 +290,7 @@
             this.lblSanLuongThang.ForeColor = System.Drawing.Color.Lime;
             this.lblSanLuongThang.Location = new System.Drawing.Point(0, 23);
             this.lblSanLuongThang.Name = "lblSanLuongThang";
-            this.lblSanLuongThang.Size = new System.Drawing.Size(345, 81);
+            this.lblSanLuongThang.Size = new System.Drawing.Size(380, 81);
             this.lblSanLuongThang.TabIndex = 0;
             this.lblSanLuongThang.Text = "0 kWh";
             this.lblSanLuongThang.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -299,10 +301,22 @@
             this.label4.ForeColor = System.Drawing.Color.Silver;
             this.label4.Location = new System.Drawing.Point(0, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(345, 23);
+            this.label4.Size = new System.Drawing.Size(380, 23);
             this.label4.TabIndex = 1;
             this.label4.Text = "TỔNG SẢN LƯỢNG THÁNG";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // chkXemCaNam
+            // 
+            this.chkXemCaNam.AutoSize = true;
+            this.chkXemCaNam.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkXemCaNam.Location = new System.Drawing.Point(305, 35);
+            this.chkXemCaNam.Name = "chkXemCaNam";
+            this.chkXemCaNam.Size = new System.Drawing.Size(154, 25);
+            this.chkXemCaNam.TabIndex = 6;
+            this.chkXemCaNam.Text = "Thống Kê Cả Năm";
+            this.chkXemCaNam.UseVisualStyleBackColor = true;
+            this.chkXemCaNam.CheckedChanged += new System.EventHandler(this.chkXemCaNam_CheckedChanged);
             // 
             // panelBottom
             // 
@@ -311,8 +325,8 @@
             this.panelBottom.Location = new System.Drawing.Point(0, 230);
             this.panelBottom.Name = "panelBottom";
             this.panelBottom.Padding = new System.Windows.Forms.Padding(20);
-            this.panelBottom.Size = new System.Drawing.Size(1073, 349);
-            this.panelBottom.TabIndex = 3;
+            this.panelBottom.Size = new System.Drawing.Size(1179, 349);
+            this.panelBottom.TabIndex = 4;
             // 
             // dgvBaoCao
             // 
@@ -330,7 +344,7 @@
             this.dgvBaoCao.Name = "dgvBaoCao";
             this.dgvBaoCao.RowHeadersVisible = false;
             this.dgvBaoCao.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvBaoCao.Size = new System.Drawing.Size(1033, 309);
+            this.dgvBaoCao.Size = new System.Drawing.Size(1139, 309);
             this.dgvBaoCao.TabIndex = 0;
             // 
             // FormBaoCaoDoanhThu
@@ -338,7 +352,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(16)))), ((int)(((byte)(37)))));
-            this.ClientSize = new System.Drawing.Size(1073, 579);
+            this.ClientSize = new System.Drawing.Size(1179, 579);
             this.Controls.Add(this.panelBottom);
             this.Controls.Add(this.panelKPI);
             this.Controls.Add(this.panelTop);
@@ -350,6 +364,7 @@
             this.panelTop.ResumeLayout(false);
             this.panelTop.PerformLayout();
             this.groupBoxFilter.ResumeLayout(false);
+            this.groupBoxFilter.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudNam)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudThang)).EndInit();
             this.panelKPI.ResumeLayout(false);
@@ -371,6 +386,7 @@
         private System.Windows.Forms.NumericUpDown nudThang, nudNam;
         private System.Windows.Forms.Button btnThongKe, btnInBaoCao;
         private System.Windows.Forms.GroupBox groupBoxFilter;
+        private System.Windows.Forms.CheckBox chkXemCaNam;
         private System.Windows.Forms.Panel panelBottom;
         private System.Windows.Forms.DataGridView dgvBaoCao;
     }
