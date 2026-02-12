@@ -82,6 +82,12 @@
     <Compile Include="Admin\FormNhatKyHeThong.Designer.cs">
       <DependentUpon>FormNhatKyHeThong.cs</DependentUpon>
     </Compile>
+    <Compile Include="Admin\FormQuanLyBangGia.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\FormQuanLyBangGia.Designer.cs">
+      <DependentUpon>FormQuanLyBangGia.cs</DependentUpon>
+    </Compile>
     <Compile Include="Admin\FormQuanLyKhachHang.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -219,6 +225,9 @@
     </Compile>
     <EmbeddedResource Include="Admin\FormNhatKyHeThong.resx">
       <DependentUpon>FormNhatKyHeThong.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\FormQuanLyBangGia.resx">
+      <DependentUpon>FormQuanLyBangGia.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Admin\FormQuanLyDongHo.resx">
       <DependentUpon>FormQuanLyDongHo.cs</DependentUpon>

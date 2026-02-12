@@ -105,18 +105,35 @@ namespace QuanLyDien.Test
 
         public void PhanLoaiNguoiDung()
         {
+            // Hiển thị Mã NV đang đăng nhập
             labMaNV.Text = Session.MaNV;
+            string vaiTro = Session.VaiTro;
 
-            if (Session.VaiTro == "Nhân Viên Thu Điện")
+            // 1. Mặc định cho hiện tất cả (dành cho Admin)
+            foreach (Control c in panelMenu.Controls) c.Visible = true;
+
+            // 2. Phân quyền cho Nhân Viên Thu Tiền
+            if (vaiTro == "Nhân Viên Thu Tiền" || vaiTro == "Nhân Viên Thu Điện")
             {
-                pallistHoaDon.Visible = false;
-                pnllist_KH.Visible = false;
+                // Ẩn các chức năng của bộ phận Ghi điện và Quản trị
+                pallist_NV.Visible = false;             // Không quản lý nhân sự
+                pallistBangGiaDien.Visible = false;    // Không sửa bảng giá
+                pallistGhiSoDien.Visible = false;      // Không ghi số điện
+                pallistQuanLyYeuCaiLapDat.Visible = false; // Không tiếp nhận lắp đặt
+                pallistQuanLyDongHoDien.Visible = false;  // Không quản lý thiết bị
+                pallistNhatKyHeThong.Visible = false;     // Không xem log
             }
 
-            if (Session.VaiTro == "Nhân Viên Ghi Điện")
+            // 3. Phân quyền cho Nhân Viên Ghi Số
+            else if (vaiTro == "Nhân Viên Ghi Số" || vaiTro == "Nhân Viên Ghi Điện")
             {
-                pallistHoaDon.Visible = false;
-                pnllist_KH.Visible = false;
+                // Ẩn các chức năng của bộ phận Kế toán/Thu tiền và Quản trị
+                pallistHoaDon.Visible = false;          // Không xem hóa đơn/công nợ
+                pallistBaoCao.Visible = false;          // Không xem báo cáo doanh thu
+                pallist_NV.Visible = false;             // Không quản lý nhân sự
+                pallistBangGiaDien.Visible = false;    // Không sửa bảng giá
+                pallistNhatKyHeThong.Visible = false;     // Không xem log
+                pnllist_KH.Visible = false;            // Không quản lý khách hàng chung
             }
         }
 
@@ -225,16 +242,17 @@ namespace QuanLyDien.Test
         {
             // Danh sách các Panel Menu theo thứ tự từ DƯỚI lên TRÊN
            Control[] menuOrder = new Control[] {
-            pallistNhatKyHeThong,       // Nằm cuối cùng của menu
+            pallistNhatKyHeThong,      
             pallistBaoCao,
             pallistQuanLyDongHoDien,
             pallistQuanLyYeuCaiLapDat,
-            pallistGhiSoDien,           // Đã bỏ dòng trùng lặp
+            pallistGhiSoDien,
+            pallistBangGiaDien,
             pnllist_KH,
             pallistHoaDon,
             pallist_NV,
-            pnllistTrangChu,            // Trang chủ nằm gần trên cùng
-            palTapMoDong                // Cái này (thường là Logo/User info) nằm trên cùng
+            pnllistTrangChu,          
+            palTapMoDong              
         };
 
             foreach (Control ctrl in menuOrder)
@@ -440,6 +458,12 @@ namespace QuanLyDien.Test
             labTieuDe.Text = "Bao Cao";
             OpenChildForm(new FormBaoCaoDoanhThu());
 
+        }
+
+        private void panel12_Click(object sender, EventArgs e)
+        {
+            labTieuDe.Text = "Quản Lý bảng giá điện";
+            OpenChildForm(new FormQuanLyBangGia());
         }
     }
 }

@@ -99,7 +99,7 @@ namespace QuanLyDien.ChucNangChung
             }
             catch (Exception ex)
             {
-                // MessageBox.Show("Lỗi vẽ biểu đồ: " + ex.Message);
+                MessageBox.Show("Lỗi vẽ biểu đồ: " + ex.Message);
             }
         }
         // XỬ LÝ ĐỒNG HỒ ---

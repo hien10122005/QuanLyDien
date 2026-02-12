@@ -187,7 +187,7 @@ namespace QuanLyDien.Admin
             if (pnlSearch != null) pnlSearch.Left = (panelTop.Width - pnlSearch.Width) / 2;
         }
 
-        private void btnSua_Click(object sender, EventArgs e)
+        private void btnKhoa_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtMaDongHo.Text))
             {
@@ -211,7 +211,7 @@ namespace QuanLyDien.Admin
                     if (ketQua > 0)
                     {
                         MessageBox.Show("Cập nhật trạng thái đồng hồ thành công!");
-                        btnLamMoi_Click(null, null); // Load lại bảng và xóa trắng ô nhập
+                        btnLamMoi_Click(null, null);
                     }
                     else
                     {
@@ -225,6 +225,17 @@ namespace QuanLyDien.Admin
             {
                 MessageBox.Show("Lỗi: " + ex.Message);
             }
+        }
+
+        private void btnLamMoi_Click_1(object sender, EventArgs e)
+        {
+            cmbKhachHang.Text = null;
+            cmbLocKhuVuc.Text = null;
+            cmbTrangThai.Text = null;
+            txtMaDongHo.Clear();
+            dtpNgayLap.Text = null;
+
+
         }
     }
 }
