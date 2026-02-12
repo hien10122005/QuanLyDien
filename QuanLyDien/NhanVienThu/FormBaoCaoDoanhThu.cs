@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Microsoft.Reporting.WinForms;
+using QuanLyDien.Class;
+using System;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Data.SqlClient;
-using QuanLyDien.Class;
 
 namespace QuanLyDien.NhanVienThu
 {
@@ -138,7 +139,29 @@ namespace QuanLyDien.NhanVienThu
 
         private void btnInBaoCao_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Chức năng đang được kết nối với hệ thống máy in...");
+
+            // 1. Kiểm tra nguồn dữ liệu của DataGridView
+            if (dgvBaoCao.DataSource == null)
+            {
+                MessageBox.Show("Vui lòng nhấn Xem Thống Kê trước!");
+                return;
+            }
+
+            // Ép kiểu DataSource về DataTable
+            DataTable dt = (DataTable)dgvBaoCao.DataSource;
+
+            if (dt.Rows.Count == 0)
+            {
+                MessageBox.Show("Không có dữ liệu để in!");
+                return;
+            }
+
+            // 2. Tạo chuỗi thông tin thời gian hiển thị trên tiêu đề
+            string tg = "Tháng " + nudThang.Value + " Năm " + nudNam.Value;
+
+            // 3. Khởi tạo Form và truyền dữ liệu
+            FormInBaoCao f = new FormInBaoCao(dt, tg);
+            f.ShowDialog();
         }
     }
 }

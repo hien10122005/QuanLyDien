@@ -59,6 +59,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -128,11 +129,6 @@
     <Compile Include="Class\NhatKy.cs" />
     <Compile Include="Class\PanelButton.cs" />
     <Compile Include="Class\Session.cs" />
-    <Compile Include="DataSet\dsDoanhThu.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>dsDoanhThu.xsd</DependentUpon>
-    </Compile>
     <Compile Include="DataSet\dsHoaDon.cs">
       <DependentUpon>dsHoaDon.xsd</DependentUpon>
     </Compile>
@@ -171,11 +167,11 @@
     <Compile Include="NhanVienThu\FormBaoCaoDoanhThu.Designer.cs">
       <DependentUpon>FormBaoCaoDoanhThu.cs</DependentUpon>
     </Compile>
-    <Compile Include="NhanVienThu\FormInBaoCaoDoanhThu.cs">
+    <Compile Include="NhanVienThu\FormInBaoCao.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NhanVienThu\FormInBaoCaoDoanhThu.Designer.cs">
-      <DependentUpon>FormInBaoCaoDoanhThu.cs</DependentUpon>
+    <Compile Include="NhanVienThu\FormInBaoCao.Designer.cs">
+      <DependentUpon>FormInBaoCao.cs</DependentUpon>
     </Compile>
     <Compile Include="NhanVienThu\FormInHoaDonDien.cs">
       <SubType>Form</SubType>
@@ -263,8 +259,8 @@
     <EmbeddedResource Include="NhanVienThu\FormBaoCaoDoanhThu.resx">
       <DependentUpon>FormBaoCaoDoanhThu.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NhanVienThu\FormInBaoCaoDoanhThu.resx">
-      <DependentUpon>FormInBaoCaoDoanhThu.cs</DependentUpon>
+    <EmbeddedResource Include="NhanVienThu\FormInBaoCao.resx">
+      <DependentUpon>FormInBaoCao.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NhanVienThu\FormInHoaDonDien.resx">
       <DependentUpon>FormInHoaDonDien.cs</DependentUpon>
@@ -283,22 +279,11 @@
     <EmbeddedResource Include="Main\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RDLC\rptBaoCaoDoanhThu.rdlc" />
+    <EmbeddedResource Include="RDLC\rptDoanhThuTongHop.rdlc" />
     <EmbeddedResource Include="RDLC\rptInHoaDon.rdlc" />
     <EmbeddedResource Include="Test\Form2.resx">
       <DependentUpon>Form2.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="DataSet\dsDoanhThu.xsc">
-      <DependentUpon>dsDoanhThu.xsd</DependentUpon>
-    </None>
-    <None Include="DataSet\dsDoanhThu.xsd">
-      <SubType>Designer</SubType>
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>dsDoanhThu.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="DataSet\dsDoanhThu.xss">
-      <DependentUpon>dsDoanhThu.xsd</DependentUpon>
-    </None>
     <None Include="DataSet\dsHoaDon.xsc">
       <DependentUpon>dsHoaDon.xsd</DependentUpon>
     </None>

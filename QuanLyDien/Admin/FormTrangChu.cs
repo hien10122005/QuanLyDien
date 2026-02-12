@@ -1,11 +1,11 @@
-﻿using System;
+﻿using QuanLyDien.Admin;
+using QuanLyDien.Class;
+using System;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Data.SqlClient;
-using QuanLyDien.Class;
-using QuanLyDien.Admin;
-
+using System.Windows.Forms.DataVisualization.Charting;
 namespace QuanLyDien.ChucNangChung
 {
     public partial class FormTrangChu : Form
@@ -32,6 +32,76 @@ namespace QuanLyDien.ChucNangChung
             CapNhatThongKe();
         }
 
+        private void VeBieuDoDoanhThu()
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(ChuoiKetNoi.KetNoi))
+                {
+                    con.Open();
+                    // Thuật toán: Lấy tổng tiền theo từng tháng trong năm hiện tại
+                    string sql = @"SELECT Thang, SUM(TongTien) as DoanhThu 
+                           FROM HoaDon 
+                           WHERE Nam = YEAR(GETDATE()) AND TrangThaiThanhToan = N'Đã thanh toán'
+                           GROUP BY Thang 
+                           ORDER BY Thang ASC";
+
+                    SqlDataAdapter da = new SqlDataAdapter(sql, con);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    // 1. Làm sạch biểu đồ trước khi vẽ
+                    chartDoanhThu.Series.Clear();
+                    chartDoanhThu.ChartAreas.Clear();
+
+                    // 2. Tạo và cấu hình Vùng vẽ (ChartArea)
+                    ChartArea chartArea = new ChartArea("MainArea");
+
+                    // --- Cấu hình màu sắc Dark Mode ---
+                    chartArea.BackColor = Color.FromArgb(15, 16, 37); // Màu nền trùng với Form
+
+                    // --- Cấu hình Trục X (Tháng) ---
+                    chartArea.AxisX.LabelStyle.ForeColor = Color.White;
+                    chartArea.AxisX.MajorGrid.LineColor = Color.FromArgb(50, 50, 50); // Đường lưới mờ
+                    chartArea.AxisX.Interval = 1; // Hiện đủ các tháng 1, 2, 3...
+                    chartArea.AxisX.Title = "Tháng";
+                    chartArea.AxisX.TitleForeColor = Color.Silver;
+
+                    // --- Cấu hình Trục Y (Doanh thu - VNĐ) ---
+                    chartArea.AxisY.LabelStyle.ForeColor = Color.White;
+                    chartArea.AxisY.MajorGrid.LineColor = Color.FromArgb(50, 50, 50);
+                    chartArea.AxisY.LabelStyle.Format = "#,##0 VNĐ"; // <--- ĐỊNH DẠNG VNĐ Ở ĐÂY
+                    chartArea.AxisY.Title = "Doanh thu";
+                    chartArea.AxisY.TitleForeColor = Color.Silver;
+
+                    chartDoanhThu.ChartAreas.Add(chartArea);
+
+                    // 3. Tạo và cấu hình Đường sóng (Series)
+                    Series series = new Series("DoanhThu");
+                    series.ChartType = SeriesChartType.SplineArea; // Kiểu sóng mượt có vùng bóng đổ
+                    series.XValueMember = "Thang";
+                    series.YValueMembers = "DoanhThu";
+
+                    // --- Màu sắc và Hiệu ứng ---
+                    series.Color = Color.FromArgb(100, 0, 255, 255); // Màu Cyan với độ trong suốt (Alpha = 100)
+                    series.BorderColor = Color.FromArgb(0, 255, 255); // Viền Cyan đậm
+                    series.BorderWidth = 3;
+
+                    // Hiệu ứng Gradient mờ dần về phía đáy
+                    series.BackGradientStyle = GradientStyle.TopBottom;
+                    series.BackSecondaryColor = Color.Transparent;
+
+                    // 4. Thêm Series vào biểu đồ và gán dữ liệu
+                    chartDoanhThu.Series.Add(series);
+                    chartDoanhThu.DataSource = dt;
+                    chartDoanhThu.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                // MessageBox.Show("Lỗi vẽ biểu đồ: " + ex.Message);
+            }
+        }
         // XỬ LÝ ĐỒNG HỒ ---
         private void ThietLapDongHo()
         {
@@ -63,8 +133,11 @@ namespace QuanLyDien.ChucNangChung
                 lblHoaDon.Text = LayGiaTriDonLe("SELECT COUNT(*) FROM HoaDon WHERE TrangThaiThanhToan = N'Chưa thanh toán'");
 
                 // Ô 4: Doanh thu 
-                decimal doanhThu = decimal.Parse(LayGiaTriDonLe("SELECT ISNULL(SUM(TongTien), 0) FROM HoaDon WHERE Thang = MONTH(GETDATE()) AND Nam = YEAR(GETDATE())"));
-                lblDoanhThu.Text = doanhThu.ToString("N0") + " VNĐ"; // Định dạng 1,000,000
+                string sqlDoanhThu = @"SELECT ISNULL(SUM(TongTien), 0) 
+                       FROM HoaDon 
+                       WHERE Thang = MONTH(GETDATE())  AND Nam = YEAR(GETDATE()) AND TrangThaiThanhToan = N'Đã thanh toán'";
+                decimal doanhThu = decimal.Parse(LayGiaTriDonLe(sqlDoanhThu));
+                lblDoanhThu.Text = doanhThu.ToString("N0") + " VNĐ";
 
                 // Ô 5: Sản lượng
                 double sanLuong = double.Parse(LayGiaTriDonLe("SELECT ISNULL(SUM(SanLuong), 0) FROM GhiChiSo WHERE Thang = MONTH(GETDATE()) AND Nam = YEAR(GETDATE())"));
@@ -75,16 +148,7 @@ namespace QuanLyDien.ChucNangChung
 
                 // Ô 7: Nhật ký hôm nay
                 lblNhatKyHeThong.Text = LayGiaTriDonLe("SELECT COUNT(*) FROM NhatKyHeThong WHERE CAST(ThoiGian AS DATE) = CAST(GETDATE() AS DATE)");
-
-                // Thông báo trạng thái
-                lblGhiChuNhanh.Text = "Cập nhật dữ liệu thành công lúc: " + DateTime.Now.ToString("HH:mm");
-                lblGhiChuNhanh.ForeColor = Color.Gray;
-            }
-            catch (Exception ex)
-            {
-                // Hiển thị lỗi nếu có 
-                lblGhiChuNhanh.Text = "Lỗi hệ thống: " + ex.Message;
-                lblGhiChuNhanh.ForeColor = Color.Red;
+                VeBieuDoDoanhThu();
             }
             finally
             {
