@@ -1,9 +1,10 @@
-﻿using System;
+﻿using QuanLyDien.Class;
+using System;
 using System.Data;
-using System.Drawing;
-using System.Windows.Forms;
 using System.Data.SqlClient;
-using QuanLyDien.Class;
+using System.Drawing;
+using System.Windows.Data;
+using System.Windows.Forms;
 
 namespace QuanLyDien.Admin
 {
@@ -110,6 +111,8 @@ namespace QuanLyDien.Admin
                     cmd.Parameters.AddWithValue("@tt", cmbTrangThai.Text);
 
                     cmd.ExecuteNonQuery();
+                    // NhatKy.Ghi("Thêm", "NguoiDung", "Tạo tài khoản " + txtTenDangNhap.Text + "cho nhân viên " +cmbMaNV.Text);
+                    NhatKy.Ghi("Thêm ", "BangGiaDien", "Thêm Bảng Giá" + txtMaBangGia.Text);
                     MessageBox.Show("Thêm bảng giá mới thành công!");
                     btnLamMoi_Click(null, null); // Xóa trắng ô nhập và tải lại bảng
                 }
@@ -145,6 +148,8 @@ namespace QuanLyDien.Admin
                    
                     cmd.ExecuteNonQuery();
                     MessageBox.Show("Cập nhật thông tin thành công!");
+                    NhatKy.Ghi("Cập nhật ", "BangGiaDien", "Cập nhật Bảng Giá" + txtMaBangGia.Text);
+
                     btnLamMoi_Click(null, null);
                 }
             }
@@ -196,6 +201,7 @@ namespace QuanLyDien.Admin
 
                     // Thông báo cho người dùng và nạp lại bảng dữ liệu
                     MessageBox.Show("Đã chuyển bảng giá " + maHienTai + " sang trạng thái: " + trangThaiMoi);
+                    NhatKy.Ghi(trangThaiMoi, "BangGiaDien", trangThaiMoi+ " Bảng Giá" + txtMaBangGia.Text);
 
                     // Gọi hàm làm mới để dgvBangGia cập nhật con số mới nhất
                     btnLamMoi_Click(null, null);

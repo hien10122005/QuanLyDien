@@ -344,6 +344,12 @@
     <None Include="Resources\572c661b-9135-404b-8784-1c36f75b5506-removebg-preview.png" />
     <None Include="Resources\agenda_11776425.png" />
     <None Include="Resources\chat.png" />
+    <None Include="Resources\analysis1.png" />
+    <None Include="Resources\energy-management_17949533.png" />
+    <None Include="Resources\list_4452691.png" />
+    <None Include="Resources\budgeting_6989649.png" />
+    <None Include="Resources\bill_6149730.png" />
+    <None Include="Resources\clipboard.png" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

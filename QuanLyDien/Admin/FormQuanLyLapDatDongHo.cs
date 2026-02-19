@@ -23,10 +23,10 @@ namespace QuanLyDien.Admin
 
         private void FormQuanLyLapDatDongHo_Load(object sender, EventArgs e)
         {
-            LoadCmbKhachHang();   // Lấy danh sách khách hàng để chọn
-            LoadCmbNhanVien();    // Lấy danh sách nhân viên kỹ thuật
-            LoadCmbTrangThai();   // Nạp: Chờ xử lý, Đang lắp, Đã xong...
-            LoadDataYeuCau();     // Hiện bảng danh sách như trong ảnh SQL của bạn
+            LoadCmbKhachHang();   
+            LoadCmbNhanVien();    
+            LoadCmbTrangThai();  
+            LoadDataYeuCau();   
             panelTop_Resize(null, null);
         }
 
@@ -78,32 +78,42 @@ namespace QuanLyDien.Admin
         {
             using (con = new SqlConnection(ChuoiKetNoi.KetNoi))
             {
-                // Câu lệnh lấy dữ liệu giống hệt bảng trong ảnh bạn gửi
                 string sql = "SELECT * FROM YeuCauLapDatDongHo ORDER BY MaYeuCau DESC";
                 da = new SqlDataAdapter(sql, con);
                 dt = new DataTable();
                 da.Fill(dt);
                 dgvYeuCau.DataSource = dt;
-
-                // Định dạng ngày tháng trên bảng cho dễ nhìn
+                DataGridViewStyle.ApplyModernStyle(dgvYeuCau);              
                 dgvYeuCau.Columns["NgayYeuCau"].DefaultCellStyle.Format = "dd/MM/yyyy";
             }
         }
-
-        // ================== NHÓM 2: TỰ SINH MÃ & TỰ ĐIỀN ĐỊA CHỈ ==================
-
-        // Hàm tự tạo mã YC tiếp theo (Ví dụ có YC005 thì sinh ra YC006)
         private string TuSinhMaYC()
         {
-            using (con = new SqlConnection(ChuoiKetNoi.KetNoi))
+            // 1. Mặc định nếu bảng chưa có dữ liệu thì mã đầu tiên là YC001
+            string maMoi = "YC001";
+
+            using (SqlConnection connection = new SqlConnection(ChuoiKetNoi.KetNoi))
             {
-                con.Open();
-                string sql = "SELECT MAX(CAST(SUBSTRING(MaYeuCau, 3, 5) AS INT)) FROM YeuCauLapDatDongHo";
-                SqlCommand cmd = new SqlCommand(sql, con);
-                object res = cmd.ExecuteScalar();
-                int soMoi = (res == DBNull.Value) ? 1 : Convert.ToInt32(res) + 1;
-                return "YC" + soMoi.ToString("D3"); // Định dạng YC001, YC002...
+                connection.Open();
+                string sql = "SELECT MAX(MaYeuCau) FROM YeuCauLapDatDongHo";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                object ketQua = cmd.ExecuteScalar();
+
+                // Nếu tìm thấy mã (bảng không trống) thì mới xử lý tăng số
+                if (ketQua != DBNull.Value && ketQua != null)
+                {
+                    string maHienTai = ketQua.ToString(); // Lấy ra chuỗi "YC005"
+
+                    // bỏ qua 2 chữ cái đầu (Y và C)
+                    string phanSo = maHienTai.Substring(2);
+
+                    int soHienTai = int.Parse(phanSo); // Biến thành số 5
+                    int soTiepTheo = soHienTai + 1;    // Tăng lên thành số 6
+                    maMoi = "YC" + soTiepTheo.ToString("000");
+                }
             }
+
+            return maMoi; 
         }
 
         private void cmbKhachHang_SelectedIndexChanged(object sender, EventArgs e)

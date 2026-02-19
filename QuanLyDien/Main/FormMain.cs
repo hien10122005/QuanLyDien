@@ -70,8 +70,8 @@ namespace QuanLyDien.Test
 
             menuNV_TK = false;
             menuKH_KV = false;
-
-            labMaNV.Text = "NV 02"; // Session.MaNV
+            labMaNV.Text = Session.MaNV;
+           // labMaNV.Text = "NV 02"; 
             XapSepListMenu();
 
             // Gán sự kiện click cho panel
@@ -120,7 +120,7 @@ namespace QuanLyDien.Test
                 pallistBangGiaDien.Visible = false;    // Không sửa bảng giá
                 pallistGhiSoDien.Visible = false;      // Không ghi số điện
                 pallistQuanLyYeuCaiLapDat.Visible = false; // Không tiếp nhận lắp đặt
-                pallistQuanLyDongHoDien.Visible = false;  // Không quản lý thiết bị
+                pallistQLDongHoDien.Visible = false;  // Không quản lý thiết bị
                 pallistNhatKyHeThong.Visible = false;     // Không xem log
             }
 
@@ -215,11 +215,16 @@ namespace QuanLyDien.Test
             btnThuMenu.Visible = true;
 
             // Hiện các chữ nhãn
-            label2.Visible = true;
-            label3.Visible = true;
-            label4.Visible = true;
-            label5.Visible = true;
-            label10.Visible = true;
+            labTrangChu.Visible = true;
+            labNhanSu.Visible = true;
+            labKhachHang.Visible = true;
+            labHoaDon.Visible = true;
+            labNKHeThong.Visible = true;
+            labGhiSoDien.Visible = true;
+            labBaoCao.Visible = true;
+            labQLDongHo.Visible = true;
+            labQLLapDongHo.Visible = true;
+            labBaoCao.Visible = true;
         }
 
         public void ThuMenu()
@@ -229,11 +234,16 @@ namespace QuanLyDien.Test
             btnThuMenu.Visible = false;
 
             // Ẩn các chữ nhãn
-            label2.Visible = false;
-            label3.Visible = false;
-            label4.Visible = false;
-            label5.Visible = false;
-            label10.Visible = false;
+            labTrangChu.Visible = false;
+            labNhanSu.Visible = false;
+            labKhachHang.Visible = false;
+            labHoaDon.Visible = false;
+            labNKHeThong.Visible = false;
+            labGhiSoDien.Visible = false;
+            labBaoCao.Visible = false;
+            labQLDongHo.Visible = false;
+            labQLLapDongHo.Visible = false;
+            labBaoCao.Visible = false;
         }
 
         // ================== SẮP XẾP MENU HIỂN THỊ  ==================
@@ -244,7 +254,7 @@ namespace QuanLyDien.Test
            Control[] menuOrder = new Control[] {
             pallistNhatKyHeThong,      
             pallistBaoCao,
-            pallistQuanLyDongHoDien,
+            pallistQLDongHoDien,
             pallistQuanLyYeuCaiLapDat,
             pallistGhiSoDien,
             pallistBangGiaDien,
