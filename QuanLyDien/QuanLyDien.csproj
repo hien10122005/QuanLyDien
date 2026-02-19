@@ -76,6 +76,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin\FormChiTietBangGia.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\FormChiTietBangGia.Designer.cs">
+      <DependentUpon>FormChiTietBangGia.cs</DependentUpon>
+    </Compile>
     <Compile Include="Admin\FormNhatKyHeThong.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -223,6 +229,9 @@
     <Compile Include="Test\Form2.Designer.cs">
       <DependentUpon>Form2.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Admin\FormChiTietBangGia.resx">
+      <DependentUpon>FormChiTietBangGia.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Admin\FormNhatKyHeThong.resx">
       <DependentUpon>FormNhatKyHeThong.cs</DependentUpon>
     </EmbeddedResource>
