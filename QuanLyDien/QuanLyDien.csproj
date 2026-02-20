@@ -359,6 +359,11 @@
     <None Include="Resources\budgeting_6989649.png" />
     <None Include="Resources\bill_6149730.png" />
     <None Include="Resources\clipboard.png" />
+    <None Include="Resources\bill_61497301.png" />
+    <None Include="Resources\notes_1355663.png" />
+    <None Include="Resources\list_610485.png" />
+    <None Include="Resources\list_6104851.png" />
+    <None Include="Resources\notes_13556631.png" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -143,6 +143,16 @@ namespace QuanLyDien.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap bill_61497301 {
+            get {
+                object obj = ResourceManager.GetObject("bill_61497301", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap budgeting_6989649 {
             get {
                 object obj = ResourceManager.GetObject("budgeting_6989649", resourceCulture);
@@ -263,6 +273,26 @@ namespace QuanLyDien.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap list_610485 {
+            get {
+                object obj = ResourceManager.GetObject("list_610485", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap list_6104851 {
+            get {
+                object obj = ResourceManager.GetObject("list_6104851", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap management__1_ {
             get {
                 object obj = ResourceManager.GetObject("management (1)", resourceCulture);
@@ -276,6 +306,26 @@ namespace QuanLyDien.Properties {
         internal static System.Drawing.Bitmap map_pin_9514190 {
             get {
                 object obj = ResourceManager.GetObject("map-pin_9514190", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap notes_1355663 {
+            get {
+                object obj = ResourceManager.GetObject("notes_1355663", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap notes_13556631 {
+            get {
+                object obj = ResourceManager.GetObject("notes_13556631", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -8,20 +8,31 @@ namespace QuanLyDien.Admin
 {
     public partial class FormChiTietBangGia : Form
     {
+        // Khai báo biến toàn cục trong FormChiTietBangGia
+        string _maBangGiaNhanVao;
         SqlConnection con;
-      //bool isBinding = false;
+        // 1. Khai báo biến để lưu mã nhận được
+        string maNhanDuoc = "";
 
-        public FormChiTietBangGia()
+        // 2. Sửa hàm tạo (Constructor)
+        public FormChiTietBangGia(string ma)
         {
             InitializeComponent();
-            this.TopLevel = false;
+            this.maNhanDuoc = ma; // Lưu mã vào biến để dùng
             this.Dock = DockStyle.Fill;
         }
 
         private void FormChiTietBangGia_Load(object sender, EventArgs e)
         {
-            LoadCmbBangGiaMaster(); // Lấy các bảng giá cha (ví dụ: Biểu 2026)
-            LoadDataChiTiet("");    // Lúc đầu chưa chọn gì thì bảng trống
+            LoadCmbBangGiaMaster(); // Nạp danh sách bảng giá vào ComboBox
+
+            // 3. Nếu có mã truyền sang, tự động chọn bảng giá đó luôn
+            if (!string.IsNullOrEmpty(maNhanDuoc))
+            {
+                // Phải gán sau khi đã nạp DataSource cho ComboBox
+                cmbBangGiaCha.SelectedValue = maNhanDuoc;
+                LoadDataChiTiet(maNhanDuoc); // Hiện luôn các bậc của mã đó
+            }
         }
 
 
@@ -121,7 +132,63 @@ namespace QuanLyDien.Admin
             }
         }
 
-        private void btnCapNhat_Click(object sender, EventArgs e)
+        private void btnSua_Click(object sender, EventArgs e)
+        {
+            if (dgvChiTiet.CurrentRow == null)
+            {
+                MessageBox.Show("Vui lòng chọn một bậc giá trong bảng để sửa!");
+                return;
+            }
+            string maCT = dgvChiTiet.CurrentRow.Cells["MaCTBG"].Value.ToString();
+
+            if (txtDonGia.Text == "" || txtTuSo.Text == "" || txtDenSo.Text == "")
+            {
+                MessageBox.Show("Vui lòng nhập đầy đủ thông tin số điện và đơn giá!");
+                return;
+            }
+
+            try
+            {
+                using (SqlConnection con = new SqlConnection(ChuoiKetNoi.KetNoi))
+                {
+                    con.Open();
+
+                    //Update (Không cho sửa MaCTBG và MaBangGia để đảm bảo tính nhất quán)
+                    string sql = @"UPDATE ChiTietBangGia 
+                           SET Bac = @bac, 
+                               TuSo = @tuso, 
+                               DenSo = @denso, 
+                               DonGia = @gia 
+                           WHERE MaCTBG = @ma";
+
+                    SqlCommand cmd = new SqlCommand(sql, con);
+                    cmd.Parameters.AddWithValue("@ma", maCT);
+                    cmd.Parameters.AddWithValue("@bac", nudBac.Value);
+                    cmd.Parameters.AddWithValue("@tuso", int.Parse(txtTuSo.Text.Trim()));
+                    cmd.Parameters.AddWithValue("@denso", int.Parse(txtDenSo.Text.Trim()));
+                    cmd.Parameters.AddWithValue("@gia", decimal.Parse(txtDonGia.Text.Trim()));
+
+                    int kq = cmd.ExecuteNonQuery();
+
+                    if (kq > 0)
+                    {
+                        MessageBox.Show("Cập nhật bậc giá thành công!");
+
+                        //Nạp lại bảng dữ liệu để thấy thay đổi
+                        LoadDataChiTiet(cmbBangGiaCha.SelectedValue.ToString());
+
+                        // Xóa trắng các ô nhập (tùy chọn)
+                        btnLamMoi_Click(null, null);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi cập nhật: " + ex.Message);
+            }
+        }
+
+        private void dgvChiTiet_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }

@@ -1,4 +1,5 @@
-﻿using QuanLyDien.Class;
+﻿using Microsoft.ReportingServices.Diagnostics.Internal;
+using QuanLyDien.Class;
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -10,16 +11,14 @@ namespace QuanLyDien.Admin
 {
     public partial class FormQuanLyBangGia : Form
     {
-        // 1. Khai báo các đối tượng kết nối cơ bản
         SqlConnection ketNoi;
         SqlDataAdapter adapter;
         DataTable duLieu;
-        bool isBinding = false; // Biển báo chặn sự kiện chạy lung tung
+        bool isBinding = false; 
 
         public FormQuanLyBangGia()
         {
             InitializeComponent();
-            // Cấu hình Form để nhúng vào Panel chính
             this.TopLevel = false;
             this.Dock = DockStyle.Fill;
         }
@@ -114,6 +113,27 @@ namespace QuanLyDien.Admin
                     // NhatKy.Ghi("Thêm", "NguoiDung", "Tạo tài khoản " + txtTenDangNhap.Text + "cho nhân viên " +cmbMaNV.Text);
                     NhatKy.Ghi("Thêm ", "BangGiaDien", "Thêm Bảng Giá" + txtMaBangGia.Text);
                     MessageBox.Show("Thêm bảng giá mới thành công!");
+                    string maMoi = txtMaBangGia.Text.Trim();
+
+                    MessageBox.Show("Thêm bảng giá thành công! Hãy thiết lập đơn giá bậc thang cho mã này.");
+                    FormChiTietBangGia f = new FormChiTietBangGia(maMoi);
+                    Panel pnlChinh = (Panel)this.Parent;
+                    if (pnlChinh != null)
+                    {
+                        f.TopLevel = false;
+                        f.FormBorderStyle = FormBorderStyle.None;
+                        f.Dock = DockStyle.Fill;
+
+                        pnlChinh.Controls.Clear();
+                        pnlChinh.Controls.Add(f);
+                        f.Show();
+                    }
+                    else
+                    {
+                        // Nếu không tìm thấy Panel cha (trường hợp chạy lẻ Form)
+                        f.ShowDialog();
+                    }
+                    LoadDataBangGia();
                     btnLamMoi_Click(null, null); // Xóa trắng ô nhập và tải lại bảng
                 }
             }
@@ -149,7 +169,7 @@ namespace QuanLyDien.Admin
                     cmd.ExecuteNonQuery();
                     MessageBox.Show("Cập nhật thông tin thành công!");
                     NhatKy.Ghi("Cập nhật ", "BangGiaDien", "Cập nhật Bảng Giá" + txtMaBangGia.Text);
-
+                    
                     btnLamMoi_Click(null, null);
                 }
             }
@@ -159,21 +179,7 @@ namespace QuanLyDien.Admin
         private void btnKhoa_Click(object sender, EventArgs e)
         {
             string maHienTai = txtMaBangGia.Text.Trim();
-            if (maHienTai == "")
-            {
-                MessageBox.Show("Vui lòng chọn một bảng giá từ danh sách!");
-                return;
-            }
-            string trangThaiMoi = "";
-
-            if (cmbTrangThai.Text == "Hoạt động")
-            {
-                trangThaiMoi = "Khóa";
-            }
-            else
-            {
-                trangThaiMoi = "Hoạt động";
-            }
+            if (maHienTai == "") return;
 
             try
             {
@@ -181,36 +187,45 @@ namespace QuanLyDien.Admin
                 {
                     con.Open();
 
-                    // Nếu trạng thái sau khi nhấn nút là 'Hoạt động'
-                    // Ta cần tắt (Khóa) tất cả các bảng giá khác để tránh xung đột
-                    if (trangThaiMoi == "Hoạt động")
+                    // Bước 1: Kiểm tra xem có bao nhiêu bảng đang "Hoạt động"
+                    SqlCommand cmdCount = new SqlCommand("SELECT COUNT(*) FROM BangGiaDien WHERE TrangThai = N'Hoạt động'", con);
+                    int soLuongDangHoatDong = (int)cmdCount.ExecuteScalar();
+
+                    // Bước 2: Xác định trạng thái mới dựa trên IF ELSE
+                    string trangThaiMoi = "";
+                    if (cmbTrangThai.Text == "Hoạt động")
                     {
-                        string sqlTatHet = "UPDATE BangGiaDien SET TrangThai = N'Khóa' WHERE MaBangGia <> @ma";
-                        SqlCommand cmdTatHet = new SqlCommand(sqlTatHet, con);
-                        cmdTatHet.Parameters.AddWithValue("@ma", maHienTai);
-                        cmdTatHet.ExecuteNonQuery();
+                        // Nếu người dùng muốn KHÓA bảng giá này
+                        // Kiểm tra xem nó có phải là cái cuối cùng không
+                        if (soLuongDangHoatDong <= 1)
+                        {
+                            MessageBox.Show("Không thể KHÓA vì đây là bảng giá duy nhất đang hoạt động. Hệ thống cần ít nhất 1 bảng giá để tính tiền!", "Cảnh báo");
+                            return; // Dừng lại không làm gì cả
+                        }
+                        trangThaiMoi = "Khóa";
+                    }
+                    else
+                    {
+                        // Nếu người dùng muốn MỞ bảng giá này
+                        trangThaiMoi = "Hoạt động";
+
+                        // Tự động Khóa tất cả các bảng khác (để chỉ có 1 cái hoạt động)
+                        SqlCommand cmdDisable = new SqlCommand("UPDATE BangGiaDien SET TrangThai = N'Khóa' WHERE MaBangGia <> @ma", con);
+                        cmdDisable.Parameters.AddWithValue("@ma", maHienTai);
+                        cmdDisable.ExecuteNonQuery();
                     }
 
-                    // Cập nhật trạng thái mới cho bảng giá đang được chọn
-                    string sqlUpdate = "UPDATE BangGiaDien SET TrangThai = @status WHERE MaBangGia = @ma";
-                    SqlCommand cmdUpdate = new SqlCommand(sqlUpdate, con);
+                    // Bước 3: Cập nhật trạng thái mới
+                    SqlCommand cmdUpdate = new SqlCommand("UPDATE BangGiaDien SET TrangThai = @status WHERE MaBangGia = @ma", con);
                     cmdUpdate.Parameters.AddWithValue("@status", trangThaiMoi);
                     cmdUpdate.Parameters.AddWithValue("@ma", maHienTai);
-
                     cmdUpdate.ExecuteNonQuery();
 
-                    // Thông báo cho người dùng và nạp lại bảng dữ liệu
-                    MessageBox.Show("Đã chuyển bảng giá " + maHienTai + " sang trạng thái: " + trangThaiMoi);
-                    NhatKy.Ghi(trangThaiMoi, "BangGiaDien", trangThaiMoi+ " Bảng Giá" + txtMaBangGia.Text);
-
-                    // Gọi hàm làm mới để dgvBangGia cập nhật con số mới nhất
+                    MessageBox.Show("Đã cập nhật trạng thái bảng giá thành: " + trangThaiMoi);
                     btnLamMoi_Click(null, null);
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi hệ thống: " + ex.Message);
-            }
+            catch (Exception ex) { MessageBox.Show("Lỗi: " + ex.Message); }
         }
 
 
@@ -243,12 +258,80 @@ namespace QuanLyDien.Admin
 
         private void panelTop_Resize(object sender, EventArgs e)
         {
-            // Code giúp cụm thông tin luôn nằm chính giữa màn hình
+            
             if (palThongTin != null)
                 palThongTin.Left = (panelTop.Width - palThongTin.Width) / 2;
 
             if (pnlSearch != null)
                 pnlSearch.Left = (panelTop.Width - pnlSearch.Width) / 2;
+        }
+
+        private void btnXoa_Click(object sender, EventArgs e)
+        {
+            string maBG = txtMaBangGia.Text.Trim();
+            if (string.IsNullOrEmpty(maBG))
+            {
+                MessageBox.Show("Vui lòng chọn bảng giá cần xóa từ danh sách!");
+                return;
+            }
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ChuoiKetNoi.KetNoi))
+                {
+                    connection.Open();
+
+                    string sqlCheckHD = "SELECT COUNT(*) FROM HoaDon WHERE MaBangGia = @ma";
+                    SqlCommand cmdCheckHD = new SqlCommand(sqlCheckHD, connection);
+                    cmdCheckHD.Parameters.AddWithValue("@ma", maBG);
+                    int countHD = (int)cmdCheckHD.ExecuteScalar();
+
+                    if (countHD > 0)
+                    {
+
+                        MessageBox.Show($"Không thể xóa! Bảng giá này đã được sử dụng cho {countHD} hóa đơn.\n" +
+                                        "Để đảm bảo tính chính xác của báo cáo, bạn chỉ có thể KHÓA bảng giá này.",
+                                        "Vi phạm ràng buộc", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        return;
+                    }
+                    if (cmbTrangThai.Text == "Hoạt động")
+                    {
+                        string sqlCheckActive = "SELECT COUNT(*) FROM BangGiaDien WHERE TrangThai = N'Hoạt động'";
+                        SqlCommand cmdCheckActive = new SqlCommand(sqlCheckActive, connection);
+                        int countActive = (int)cmdCheckActive.ExecuteScalar();
+
+                        if (countActive <= 1)
+                        {
+                            MessageBox.Show("Đây là bảng giá duy nhất đang HOẠT ĐỘNG. Bạn phải có ít nhất 1 bảng giá để hệ thống vận hành!",
+                                            "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                    }
+
+                    DialogResult dr = MessageBox.Show($"Bạn có chắc chắn muốn xóa vĩnh viễn bảng giá {maBG} không?\n" +
+                                                      "Hành động này cũng sẽ xóa toàn bộ các bậc giá chi tiết bên trong.",
+                                                      "Xác nhận xóa cứng", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                    if (dr == DialogResult.Yes)
+                    {
+                        string sqlDeleteChild = "DELETE FROM ChiTietBangGia WHERE MaBangGia = @ma";
+                        SqlCommand cmdDelChild = new SqlCommand(sqlDeleteChild, connection);
+                        cmdDelChild.Parameters.AddWithValue("@ma", maBG);
+                        cmdDelChild.ExecuteNonQuery();
+                        string sqlDeleteParent = "DELETE FROM BangGiaDien WHERE MaBangGia = @ma";
+                        SqlCommand cmdDelParent = new SqlCommand(sqlDeleteParent, connection);
+                        cmdDelParent.Parameters.AddWithValue("@ma", maBG);
+                        cmdDelParent.ExecuteNonQuery();
+
+                        MessageBox.Show("Đã xóa vĩnh viễn bảng giá thành công!");
+                        btnLamMoi_Click(null, null); // Load lại bảng dữ liệu
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi hệ thống: " + ex.Message);
+            }
         }
     }
 }

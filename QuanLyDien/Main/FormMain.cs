@@ -54,7 +54,8 @@ namespace QuanLyDien.Test
 
             PhanLoaiNguoiDung();
             this.StartPosition = FormStartPosition.CenterScreen;
-
+            this.Width = 1500;
+            this.Height = 800 ;
             DongTatCaMenu();
         }
 
@@ -117,7 +118,7 @@ namespace QuanLyDien.Test
             {
                 // Ẩn các chức năng của bộ phận Ghi điện và Quản trị
                 pallist_NV.Visible = false;             // Không quản lý nhân sự
-                pallistBangGiaDien.Visible = false;    // Không sửa bảng giá
+             //   pnlMenuBangGiaDien.Visible = false;    // Không sửa bảng giá
                 pallistGhiSoDien.Visible = false;      // Không ghi số điện
                 pallistQuanLyYeuCaiLapDat.Visible = false; // Không tiếp nhận lắp đặt
                 pallistQLDongHoDien.Visible = false;  // Không quản lý thiết bị
@@ -131,7 +132,6 @@ namespace QuanLyDien.Test
                 pallistHoaDon.Visible = false;          // Không xem hóa đơn/công nợ
                 pallistBaoCao.Visible = false;          // Không xem báo cáo doanh thu
                 pallist_NV.Visible = false;             // Không quản lý nhân sự
-                pallistBangGiaDien.Visible = false;    // Không sửa bảng giá
                 pallistNhatKyHeThong.Visible = false;     // Không xem log
                 pnllist_KH.Visible = false;            // Không quản lý khách hàng chung
             }
@@ -196,13 +196,12 @@ namespace QuanLyDien.Test
 
         private void btnHien_Click(object sender, EventArgs e)
         {
-            // Bỏ hết logic timer, gọi trực tiếp
             HienMenu();
         }
 
         private void btnThu_Click(object sender, EventArgs e)
         {
-            // Bỏ hết logic timer, gọi trực tiếp
+            DongTatCaMenu();
             ThuMenu();
         }
 
@@ -221,10 +220,12 @@ namespace QuanLyDien.Test
             labHoaDon.Visible = true;
             labNKHeThong.Visible = true;
             labGhiSoDien.Visible = true;
-            labBaoCao.Visible = true;
             labQLDongHo.Visible = true;
             labQLLapDongHo.Visible = true;
+            labBangGiaDien.Visible = true;
+            labChitietBangGia.Visible = true;
             labBaoCao.Visible = true;
+
         }
 
         public void ThuMenu()
@@ -240,10 +241,12 @@ namespace QuanLyDien.Test
             labHoaDon.Visible = false;
             labNKHeThong.Visible = false;
             labGhiSoDien.Visible = false;
-            labBaoCao.Visible = false;
+            labBangGiaDien.Visible = false;
             labQLDongHo.Visible = false;
             labQLLapDongHo.Visible = false;
+            labChitietBangGia.Visible = false;
             labBaoCao.Visible = false;
+
         }
 
         // ================== SẮP XẾP MENU HIỂN THỊ  ==================
@@ -257,7 +260,6 @@ namespace QuanLyDien.Test
             pallistQLDongHoDien,
             pallistQuanLyYeuCaiLapDat,
             pallistGhiSoDien,
-            pallistBangGiaDien,
             pnllist_KH,
             pallistHoaDon,
             pallist_NV,
@@ -327,6 +329,8 @@ namespace QuanLyDien.Test
             labNutTha_HD.Text = "▶";
             pallistHoaDon.Height = 60;
             pnlMenuLiKH_HH_CTHH.Visible = false;
+
+           
 
         }
 
@@ -474,6 +478,12 @@ namespace QuanLyDien.Test
         {
             labTieuDe.Text = "Quản Lý bảng giá điện";
             OpenChildForm(new FormQuanLyBangGia());
+        }
+
+        private void pallistChiTietBangGiaDien_Click(object sender, EventArgs e)
+        {
+            labTieuDe.Text = "Chi tiết bảng giá điện";
+            OpenChildForm(new FormChiTietBangGia(null));
         }
     }
 }

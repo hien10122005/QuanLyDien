@@ -39,13 +39,11 @@ namespace QuanLyDien.ChucNangChung
                 using (SqlConnection con = new SqlConnection(ChuoiKetNoi.KetNoi))
                 {
                     con.Open();
-                    // Thuật toán: Lấy tổng tiền theo từng tháng trong năm hiện tại
-                    string sql = @"SELECT Thang, SUM(TongTien) as DoanhThu 
+                string sql = @"SELECT Thang, SUM(TongTien) as DoanhThu 
                            FROM HoaDon 
                            WHERE Nam = YEAR(GETDATE()) AND TrangThaiThanhToan = N'Đã thanh toán'
                            GROUP BY Thang 
                            ORDER BY Thang ASC";
-
                     SqlDataAdapter da = new SqlDataAdapter(sql, con);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
@@ -63,7 +61,9 @@ namespace QuanLyDien.ChucNangChung
                     // --- Cấu hình Trục X (Tháng) ---
                     chartArea.AxisX.LabelStyle.ForeColor = Color.White;
                     chartArea.AxisX.MajorGrid.LineColor = Color.FromArgb(50, 50, 50); // Đường lưới mờ
-                    chartArea.AxisX.Interval = 1; // Hiện đủ các tháng 1, 2, 3...
+                    chartArea.AxisX.Interval = 1;
+                    chartArea.AxisX.Minimum = 1;
+                    chartArea.AxisX.Maximum = 12;
                     chartArea.AxisX.Title = "Tháng";
                     chartArea.AxisX.TitleForeColor = Color.Silver;
 
@@ -82,6 +82,8 @@ namespace QuanLyDien.ChucNangChung
                     series.XValueMember = "Thang";
                     series.YValueMembers = "DoanhThu";
 
+
+                    chartArea.AxisX.IsMarginVisible = false; // bỏ khoảng trống đầu
                     // --- Màu sắc và Hiệu ứng ---
                     series.Color = Color.FromArgb(100, 0, 255, 255); // Màu Cyan với độ trong suốt (Alpha = 100)
                     series.BorderColor = Color.FromArgb(0, 255, 255); // Viền Cyan đậm
